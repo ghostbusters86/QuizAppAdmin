@@ -1,0 +1,133 @@
+body{
+    background-color: blueviolet !important;
+}
+table,
+thead,
+tr,
+tbody,
+th,
+td {
+  text-align: center;
+}
+#mainDiv{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#quiz{
+    width: 800px;
+    height: 400px;
+    background-color: #fff;
+    display: grid;
+    grid-template-rows: 60px auto;
+    border-radius: 30px;
+}
+#mainBody{
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+}
+#quizHeader{
+    width: 800px;
+    height: 60px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+#quizBody{
+    background-color: rgb(211, 209, 209);
+    padding: 10px 20px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+.option_group{
+    list-style-type: none;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.option{
+    border: 3px solid transparent;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 40px;
+    margin: 10px 10px 10px 0px;
+    background-color: white;
+    transition: 500ms;
+}
+.option:hover{
+    cursor: pointer;
+    border: 3px solid rgb(130, 18, 182) !important;
+}
+.active{
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 40px;
+    margin: 10px 10px 10px 0px;
+    color: white;
+    background-color: rgb(130, 18, 182) !important;
+    border: 3px solid rgb(130, 18, 182) !important;
+    transition: 500ms;
+}
+.nxtBtn, .rstBtn{
+    background-color: rgb(130, 18, 182) !important;
+    border-radius: 50px !important;
+    padding: 15px !important;
+    transition: 500ms;
+    border: none !important;
+    float: right;
+}
+.startBtn{
+    font-size: xx-large !important;
+    border-radius: 80px !important;
+    padding: 50px !important;
+    border: none !important;
+    margin: 20px;
+    transition: 500ms;
+}
+.exitBtn{
+    border-radius: 50px !important;
+    width: 200px;
+    height: 100px;
+    margin-bottom: 20px;
+    font-size: xx-large !important;
+}
+/* .nxtBtn:active, .rstBtn:active, .startBtn:active{
+    box-shadow: black 0.3;
+    background-color: rgb(130, 18, 182) !important;
+    border-radius: 50px !important;
+    padding: 15px !important;
+    transition: 500ms;
+    border: none !important;
+} */
+.nxtBtn:focus, .exitBtn:focus, .rstBtn:focus, .startBtn:focus{
+    outline: none !important;
+    box-shadow: none !important;
+}
+.nxtBtn:hover, .rstBtn:hover, .startBtn:hover, .exitBtn:hover{
+    background-color: white !important;
+    color: black !important;
+    transition: 500ms;
+}
+#timer{
+    color: white;
+    padding: 18px;
+    margin-right: -20px;
+    border-top-right-radius: 27px;
+    background-color: rgb(130, 18, 182);
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
