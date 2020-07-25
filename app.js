@@ -50,6 +50,12 @@ var questions = [
         ]
     }   
 ]
+questions_temp = 
+    {
+        question: "",
+        answer: "",
+        options: []
+    }
 var seconds = 0
 var minutes = 0
 var answers = []
@@ -138,10 +144,10 @@ function appendResult(){
 function startQuiz(){
     document.getElementById("mainBody").style.display = "flex"
     document.getElementById("startBtn").style.display = "none"
-    document.getElementById("adminPanel").style.display = "none"
+    document.getElementById("adminBtn").style.display = "none"
     
     appendQuestion()
-    var interval = setInterval(function(){
+    interval = setInterval(function(){
         if(seconds<59){
             seconds++
         }
@@ -161,11 +167,173 @@ function startQuiz(){
     }, 1000)
        
 }
+function appendAllQuestions(){
 
+}
 function adminPanel(){
     document.getElementById("mainBody").style.display = "none"
     document.getElementById("startBtn").style.display = "none"
-    document.getElementById("adminPanel").style.display = "none"   
+    document.getElementById("adminBtn").style.display = "none"  
+    document.getElementById("mainPanel").style.display = "flex"
+}
 
-    
+/*===============================Panel Add Remove Edit================================*/
+var addingRec = false;
+var rVal = "<li></li>";
+var colors = ["#7acbbd", "#ffb72b", "#855fc1", "#ea4986", "#ff8737"]
+var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thirsday", "Friday", "Saturday"]
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+var colInd = 0;
+
+function addQuestion(){
+    if(!addingRec){
+        addingRec = true;
+        var questionsUl = document.getElementById("questionsUl")
+        var optionsUl = document.createElement('ul')
+        var li = document.createElement('li')
+        var h3 = document.createElement('h3')
+        var input = document.createElement('input')
+        input.className = 'form-control w-75'
+        input.required = 1;
+        li.className = 'panelLi'
+        li.style.listStyleType = "none"
+        li.style.backgroundColor = "grey"
+        li.style.borderRadius = "30px"
+        li.style.setProperty("padding", "10px 30px", "important");
+        optionsUl.style.width = "1000px"
+        h3.innerHTML = "Q:&nbsp"
+        li.appendChild(h3)
+        li.appendChild(input)
+        for(var i=0; i<4; i++){
+            var optionsBody = "<li class='panelLi'><h3>Option " + (i+1) + ":&nbsp</h3><input class='form-control w-50'></li>"
+            optionsUl.innerHTML += optionsBody
+        }
+        var ansLiHtml = "<li class='panelLi'><h3>Answer :&nbsp</h3><input class='form-control w-50'></li>"
+        optionsUl.innerHTML += ansLiHtml
+        var btnLiHtml = "<li style='display: flex; justify-content: center;'>"
+        btnLiHtml += "<button class='btn btn-success liBtnTAdd fa fa-check' onclick='AddRec(this)'></button>"
+        btnLiHtml += "<button class='btn btn-danger liBtnAdd fa fa-times' onclick='discardRec(this)'></button>"
+        btnLiHtml += "</li>"
+        optionsUl.innerHTML += btnLiHtml
+        li.appendChild(optionsUl)
+        questionsUl.appendChild(li)
+    }
+}
+function discardRec(id){
+    addingRec = false;
+    id.parentNode.parentNode.parentNode.remove() 
+}
+function AddRec(id){
+    var numOfOptns = id.parentNode.parentNode.childNodes.length-2
+    var optionVals = []
+    var questionVal = id.parentNode.parentNode.parentNode.childNodes[1].value
+    for(var i=0; i<numOfOptns; i++)
+        optionVals[i] = id.parentNode.parentNode.childNodes[i].childNodes[1].value
+    var answerVal = id.parentNode.previousSibling.childNodes[1].value
+
+    //check if any required field is empty
+    if(!(questionVal === '') && !(answerVal === '')){
+        var enteredOpt = 0;
+        //check if atleast two options are entered
+        for(var i=0; i<optionVals.length; i++){
+            if(!(optionVals[i] === ''))
+               enteredOpt++
+            if(enteredOpt==2)
+                break
+        }
+        if(enteredOpt != 2)
+            alert("Please enter atleast two options")
+        else{
+            //check if the answer matches any of the options
+            enteredOpt = 0
+            for(var i=0; i<optionVals.length; i++){
+                if(optionVals[i] === answerVal){
+                    enteredOpt = 1
+                    break
+                }
+            }
+            if(!enteredOpt)
+                alert("Please enter one of the options in Answer filed")
+            else{
+                addingRec = false;
+                id.parentNode.parentNode.parentNode.remove()
+
+                questions[questions.length] = questions_temp
+                questions[questions.length-1].question = questionVal 
+                questions[questions.length-1].answer = answerVal
+                for(var i=0; i<numOfOptns; i++) 
+                    questions[questions.length-1].options[i] = optionVals[i] 
+                
+                var divBody = "<li style='background-color: grey; border-radius: 30px; padding: 10px 30px !important; margin-bottom: 10px;'><h3 class='quizHeader'>Q" + questions.length + ":&nbsp" + questions[questions.length-1].question + "</h3>"
+                divBody += "<ul class='option_group' id='option_group'>"
+                for (var i = 0; i < questions[qNum].options.length; i++) {
+                    if (questions[questions.length - 1].options[i] === questions[questions.length - 1].answer)
+                        divBody += "<li class='optionPanel active' onclick=''>" + questions[questions.length - 1].options[i] + "</li>";
+                    else
+                        divBody += "<li class='optionPanel' onclick=''>" + questions[questions.length - 1].options[i] + "</li>";
+
+                }
+                divBody += "<li style='display: flex; justify-content: center;'>"
+                divBody += "<button class='btn btn-success fa fa-pencil liBtn' onclick='EditRec(this)'></button>";
+                divBody += "<button class='btn btn-danger fa fa-trash liBtn' onclick='EditRec(this)'></button></li>";
+                divBody += "</ul><li>"
+                questionsUl.innerHTML = divBody
+            }
+        }
+    }
+    else
+        alert("Please fill the required fields")
+}
+function EditRec(id){
+    if(!addingRec){
+        addingRec = true;
+        var inVal = id.parentNode.firstChild.innerHTML
+        rVal = id.parentNode
+        var questionsUl = document.getElementById("questionsUl")
+        var nxtSib = id.parentNode.nextSibling
+        var li = document.createElement('li')
+        var input = document.createElement('input')
+        var btnC = document.createElement('button')
+        var btnU = document.createElement('button')
+        btnU.className = "btn btn-success"
+        btnC.className = "btn btn-danger"
+        btnU.setAttribute('onclick', 'AddRec(this)')
+        btnC.setAttribute('onclick', 'cancelUpdateRec(this)')
+        btnU.textContent = 'Update'
+        btnC.textContent = 'Cancel'
+        input.className = 'form-control'
+        input.value = inVal
+        li.style.listStyleType = "none"
+        li.appendChild(input)
+        li.appendChild(btnU)
+        li.appendChild(btnC)
+        id.parentNode.remove()
+        questionsUl.insertBefore(li, nxtSib)
+    }
+}
+function cancelUpdateRec(id){
+    addingRec = false;
+    questionsUl.insertBefore(rVal, id.parentNode.nextSibling)
+    id.parentNode.remove()
+}
+function DelAll(){
+    addingRec = false;
+    var questionsUl = document.getElementById("questionsUl")
+    var first = questionsUl.firstElementChild;
+    while (first) { 
+        first.remove(); 
+        first = questionsUl.firstElementChild;
+    }
+}
+function showBtn(id){
+    var btnE = id.getElementsByClassName('liBtn')[0]
+    var btnD = id.getElementsByClassName('liBtn')[1]
+    btnE.style.display = "inline"
+    btnD.style.display = "inline"
+}
+function hideBtn(id){
+    var btnE = id.getElementsByClassName('liBtn')[0]
+    var btnD = id.getElementsByClassName('liBtn')[1]
+    btnE.style.display = "none"
+    btnD.style.display = "none"
 }
