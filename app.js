@@ -205,6 +205,21 @@ function appendAllQuestions(){
     }
 
 }
+
+function homePage(){
+    document.getElementById("mainBody").style.display = "none"
+    document.getElementById("startBtn").style.display = "block"
+    document.getElementById("adminBtn").style.display = "block"  
+    document.getElementById("mainPanel").style.display = "none"
+    
+    var questionsUl = document.getElementById("questionsUl")
+    var first = questionsUl.firstElementChild;
+    while (first) { 
+        first.remove(); 
+        first = questionsUl.firstElementChild;
+    }
+}
+
 function adminPanel(){
     document.getElementById("mainBody").style.display = "none"
     document.getElementById("startBtn").style.display = "none"

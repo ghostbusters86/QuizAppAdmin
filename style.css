@@ -117,13 +117,24 @@ li{
     border: none !important;
     float: right;
 }
-.startBtn, .adminBtn{
+.startBtn, .adminBtn, .homeBtn{
     font-size: xx-large !important;
     border-radius: 80px !important;
     padding: 50px !important;
     border: none !important;
     margin: 20px !important;
     transition: 500ms;
+}
+.homeBtn{
+    /* background: none repeat scroll 0 0 #FF0000; */
+    /* border: medium none; */
+    /* color: #FFFFFF; */
+    /* height: 50px; */
+    left: 70%;
+    position: fixed;
+    top: 280px;
+    padding: 30px 50px !important;
+    /* width: 100px; */
 }
 .exitBtn{
     border-radius: 50px !important;
@@ -141,18 +152,18 @@ li{
     border: none !important;
 } */
 /* .startBtn, $ad */
-.nxtBtn:focus, .exitBtn:focus, .rstBtn:focus, .startBtn:focus, .adminBtn:focus{
+.nxtBtn:focus, .homeBtn:focus,  .exitBtn:focus, .rstBtn:focus, .startBtn:focus, .adminBtn:focus{
     outline: none !important;
     box-shadow: none !important;
 }
-.nxtBtn:hover, .rstBtn:hover, .startBtn:hover, .exitBtn:hover, .adminBtn:hover{
+.nxtBtn:hover, .homeBtn:hover, .rstBtn:hover, .startBtn:hover, .exitBtn:hover, .adminBtn:hover{
     background-color: white !important;
     color: black !important;
     transition: 500ms;
 }
 #timer{
     color: white;
-    padding: 18px;
+    padding: 19px;
     margin-right: -20px;
     border-top-right-radius: 27px;
     background-color: rgb(130, 18, 182);
