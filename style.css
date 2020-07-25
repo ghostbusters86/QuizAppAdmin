@@ -165,7 +165,6 @@ li{
 #mainPanel{
     min-width: 300px;
     min-height: 650px;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     /* position: relative; */
@@ -250,6 +249,7 @@ p,.panelBtn,input{
     font-size: 25px !important;
     border-radius: 50% !important;
     padding: 10px 12px !important;
+    margin: 0px 20px;
 }
 .liBtnAdd{
     padding: 10px 13px !important;

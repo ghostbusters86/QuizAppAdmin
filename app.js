@@ -167,7 +167,42 @@ function startQuiz(){
     }, 1000)
        
 }
+
+/*===============================Panel Add Remove Edit================================*/
+var addingRec = false;
+var rVal = ''
+var editingRec = false;
+var colors = ["#7acbbd", "#ffb72b", "#855fc1", "#ea4986", "#ff8737"]
+var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thirsday", "Friday", "Saturday"]
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+var colInd = 0;
+var questionsUl = document.getElementById("questionsUl")
+
 function appendAllQuestions(){
+    for(var j=0; j<questions.length; j++){
+
+        var numOfOptns = questions[j].options.length
+        var optionVals = []
+        var questionVal = questions[j].question
+        for(var i=0; i<numOfOptns; i++)
+            optionVals[i] = questions[j].options[i]
+        var answerVal = questions[j].answer
+
+        var divBody = "<li style='background-color: grey; border-radius: 30px; padding: 10px 30px !important; margin-bottom: 10px;'><input hidden value=\
+        " + (j+1) + "><h3 class='quizHeader'>Q" + (j+1) + ":&nbsp" + questionVal + "</h3>"
+        divBody += "<ul class='option_group' id='option_group'>"
+        for (var i = 0; i < numOfOptns; i++) {
+            if (optionVals[i] === answerVal)
+                divBody += "<li class='optionPanel active' onclick=''>" + optionVals[i] + "</li>";
+            else
+                divBody += "<li class='optionPanel' onclick=''>" + optionVals[i] + "</li>";
+            }
+        divBody += "<li style='display: flex; justify-content: center;'>"
+        divBody += "<button class='btn btn-success fa fa-pencil liBtn' onclick='EditRec(this)'></button>";
+        divBody += "<button class='btn btn-danger fa fa-trash liBtn' onclick='deleteRec(this)'></button></li>";
+        divBody += "</ul></li>"
+        questionsUl.innerHTML += divBody
+    }
 
 }
 function adminPanel(){
@@ -175,20 +210,12 @@ function adminPanel(){
     document.getElementById("startBtn").style.display = "none"
     document.getElementById("adminBtn").style.display = "none"  
     document.getElementById("mainPanel").style.display = "flex"
+    appendAllQuestions()
 }
-
-/*===============================Panel Add Remove Edit================================*/
-var addingRec = false;
-var rVal = "<li></li>";
-var colors = ["#7acbbd", "#ffb72b", "#855fc1", "#ea4986", "#ff8737"]
-var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thirsday", "Friday", "Saturday"]
-var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-var colInd = 0;
 
 function addQuestion(){
     if(!addingRec){
         addingRec = true;
-        var questionsUl = document.getElementById("questionsUl")
         var optionsUl = document.createElement('ul')
         var li = document.createElement('li')
         var h3 = document.createElement('h3')
@@ -218,13 +245,26 @@ function addQuestion(){
         li.appendChild(optionsUl)
         questionsUl.appendChild(li)
     }
+    else
+        alert("You have a record adding in progress")
+} 
+function deleteRec(id){
+    var discardQNum = id.parentNode.parentNode.parentNode.firstChild.value
+    questions.splice(discardQNum-1, 1)
+    var first = questionsUl.firstElementChild;
+    while (first) { 
+        first.remove(); 
+        first = questionsUl.firstElementChild;
+    }
+    appendAllQuestions()
 }
+
 function discardRec(id){
     addingRec = false;
     id.parentNode.parentNode.parentNode.remove() 
 }
 function AddRec(id){
-    var numOfOptns = id.parentNode.parentNode.childNodes.length-2
+    var numOfOptns = id.parentNode.parentNode.childNodes.length - 2
     var optionVals = []
     var questionVal = id.parentNode.parentNode.parentNode.childNodes[1].value
     for(var i=0; i<numOfOptns; i++)
@@ -255,29 +295,52 @@ function AddRec(id){
             if(!enteredOpt)
                 alert("Please enter one of the options in Answer filed")
             else{
-                addingRec = false;
-                id.parentNode.parentNode.parentNode.remove()
-
-                questions[questions.length] = questions_temp
-                questions[questions.length-1].question = questionVal 
-                questions[questions.length-1].answer = answerVal
-                for(var i=0; i<numOfOptns; i++) 
-                    questions[questions.length-1].options[i] = optionVals[i] 
-                
-                var divBody = "<li style='background-color: grey; border-radius: 30px; padding: 10px 30px !important; margin-bottom: 10px;'><h3 class='quizHeader'>Q" + questions.length + ":&nbsp" + questions[questions.length-1].question + "</h3>"
-                divBody += "<ul class='option_group' id='option_group'>"
-                for (var i = 0; i < questions[qNum].options.length; i++) {
-                    if (questions[questions.length - 1].options[i] === questions[questions.length - 1].answer)
-                        divBody += "<li class='optionPanel active' onclick=''>" + questions[questions.length - 1].options[i] + "</li>";
-                    else
-                        divBody += "<li class='optionPanel' onclick=''>" + questions[questions.length - 1].options[i] + "</li>";
-
+                addingRec = false
+                if(editingRec){
+                    editingRec = false
+                    var qNumEditHtml = id.parentNode.parentNode.parentNode.firstChild.innerHTML
+                    var qNumEdit = qNumEditHtml.substring(1, qNumEditHtml.indexOf(':'))
+                    
+                    questions[qNumEdit-1].question = questionVal 
+                    questions[qNumEdit-1].answer = answerVal
+                    for(var i=0; i<numOfOptns; i++) 
+                        questions[qNumEdit-1].options[i] = optionVals[i] 
+                    
+                    var divBody = "<li style='background-color: grey; border-radius: 30px; padding: 10px 30px !important; margin-bottom: 10px;'><input hidden value=\
+                    " + qNumEdit + "><h3 class='quizHeader'>Q" + qNumEdit + ":&nbsp" + questions[qNumEdit-1].question + "</h3>"
+                    divBody += "<ul class='option_group' id='option_group'>"
+                    for (var i = 0; i < questions[qNumEdit-1].options.length; i++) {
+                        if (questions[qNumEdit-1].options[i] === questions[qNumEdit-1].answer)
+                            divBody += "<li class='optionPanel active' onclick=''>" + questions[qNumEdit-1].options[i] + "</li>";
+                        else
+                            divBody += "<li class='optionPanel' onclick=''>" + questions[qNumEdit-1].options[i] + "</li>";
+                    }
+                }
+                else{
+                    questions[questions.length] = questions_temp
+                    questions[questions.length-1].question = questionVal 
+                    questions[questions.length-1].answer = answerVal
+                    for(var i=0; i<numOfOptns; i++) 
+                        questions[questions.length-1].options[i] = optionVals[i] 
+                    
+                    var divBody = "<li style='background-color: grey; border-radius: 30px; padding: 10px 30px !important; margin-bottom: 10px;'><input hidden value=\
+                    " + questions.length + "><h3 class='quizHeader'>Q" + questions.length + ":&nbsp" + questions[questions.length-1].question + "</h3>"
+                    divBody += "<ul class='option_group' id='option_group'>"
+                    for (var i = 0; i < questions[questions.length-1].options.length; i++) {
+                        if (questions[questions.length - 1].options[i] === questions[questions.length - 1].answer)
+                            divBody += "<li class='optionPanel active' onclick=''>" + questions[questions.length - 1].options[i] + "</li>";
+                        else
+                            divBody += "<li class='optionPanel' onclick=''>" + questions[questions.length - 1].options[i] + "</li>";
+                    }
                 }
                 divBody += "<li style='display: flex; justify-content: center;'>"
                 divBody += "<button class='btn btn-success fa fa-pencil liBtn' onclick='EditRec(this)'></button>";
-                divBody += "<button class='btn btn-danger fa fa-trash liBtn' onclick='EditRec(this)'></button></li>";
-                divBody += "</ul><li>"
-                questionsUl.innerHTML = divBody
+                divBody += "<button class='btn btn-danger fa fa-trash liBtn' onclick='deleteRec(this)'></button></li>";
+                divBody += "</ul></li>"
+                var p = document.createElement('p')
+                p.innerHTML += divBody
+                questionsUl.insertBefore(p.firstChild, id.parentNode.parentNode.parentNode.nextSibling)
+                id.parentNode.parentNode.parentNode.remove()
             }
         }
     }
@@ -287,34 +350,61 @@ function AddRec(id){
 function EditRec(id){
     if(!addingRec){
         addingRec = true;
-        var inVal = id.parentNode.firstChild.innerHTML
-        rVal = id.parentNode
-        var questionsUl = document.getElementById("questionsUl")
-        var nxtSib = id.parentNode.nextSibling
+        editingRec = true;
+        var numOfOptns = id.parentNode.parentNode.childNodes.length - 1
+        var optionVals = []
+        var answerVal = ''
+        var questionValHtml = id.parentNode.parentNode.parentNode.childNodes[1].innerHTML
+        var questionVal = questionValHtml.substring(questionValHtml.indexOf(';') + 1, questionValHtml.length)
+        for (var i = 0; i < numOfOptns; i++) {
+            optionVals[i] = "'" + id.parentNode.parentNode.childNodes[i].innerHTML + "'"
+            if (id.parentNode.parentNode.childNodes[i].className.indexOf('active') != -1)
+                answerVal = optionVals[i]
+        } 
+        var editQNum = id.parentNode.parentNode.parentNode.firstChild.value
+        rVal = id.parentNode.parentNode.parentNode.parentNode.childNodes[editQNum]
+
+        var optionsUl = document.createElement('ul')
         var li = document.createElement('li')
+        var h3 = document.createElement('h3')
         var input = document.createElement('input')
-        var btnC = document.createElement('button')
-        var btnU = document.createElement('button')
-        btnU.className = "btn btn-success"
-        btnC.className = "btn btn-danger"
-        btnU.setAttribute('onclick', 'AddRec(this)')
-        btnC.setAttribute('onclick', 'cancelUpdateRec(this)')
-        btnU.textContent = 'Update'
-        btnC.textContent = 'Cancel'
-        input.className = 'form-control'
-        input.value = inVal
+        input.className = 'form-control w-75'
+        input.required = 1;
+        input.value = questionVal
+        li.className = 'panelLi'
         li.style.listStyleType = "none"
+        li.style.backgroundColor = "grey"
+        li.style.borderRadius = "30px"
+        li.style.setProperty("padding", "10px 30px", "important");
+        optionsUl.style.width = "1000px"
+        h3.innerHTML = 'Q' + editQNum + ':&nbsp'
+        li.appendChild(h3)
         li.appendChild(input)
-        li.appendChild(btnU)
-        li.appendChild(btnC)
-        id.parentNode.remove()
-        questionsUl.insertBefore(li, nxtSib)
+        for (var i = 0; i < 4; i++) {
+            var optionsBody = "<li class='panelLi'><h3>Option " + (i + 1) + ":&nbsp</h3><input class='form-control w-50' value=" + optionVals[i] + "></li>"
+            optionsUl.innerHTML += optionsBody
+        }
+        var ansLiHtml = "<li class='panelLi'><h3>Answer :&nbsp</h3><input class='form-control w-50' value=" + answerVal + "></li>"
+        optionsUl.innerHTML += ansLiHtml
+        var btnLiHtml = "<li style='display: flex; justify-content: center;'>"
+        btnLiHtml += "<button class='btn btn-success liBtnTAdd fa fa-check' onclick='AddRec(this)'></button>"
+        btnLiHtml += "<button class='btn btn-danger liBtnAdd fa fa-times' onclick='cancelUpdateRec(this)'></button>"
+        btnLiHtml += "</li>"
+        optionsUl.innerHTML += btnLiHtml
+        li.appendChild(optionsUl)
+
+        questionsUl.insertBefore(li, id.parentNode.parentNode.parentNode.nextSibling)
+
+        id.parentNode.parentNode.parentNode.remove() 
     }
+    else
+        alert("You have a record adding in progress")
 }
 function cancelUpdateRec(id){
     addingRec = false;
-    questionsUl.insertBefore(rVal, id.parentNode.nextSibling)
-    id.parentNode.remove()
+    editingRec = false;
+    questionsUl.insertBefore(rVal, id.parentNode.parentNode.parentNode.nextSibling)
+    id.parentNode.parentNode.parentNode.remove()
 }
 function DelAll(){
     addingRec = false;
@@ -324,6 +414,7 @@ function DelAll(){
         first.remove(); 
         first = questionsUl.firstElementChild;
     }
+    questions.splice(0, questions.length)
 }
 function showBtn(id){
     var btnE = id.getElementsByClassName('liBtn')[0]
