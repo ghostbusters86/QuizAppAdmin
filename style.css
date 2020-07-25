@@ -16,7 +16,7 @@ td {
     justify-content: center;
     align-items: center;
 }
-#quiz{
+#quiz, #panelInner{
     width: 800px;
     height: 400px;
     background-color: #fff;
@@ -24,13 +24,17 @@ td {
     grid-template-rows: 60px auto;
     border-radius: 30px;
 }
+#panelInner{
+    height: 650px;
+    width: 1200px;
+    grid-template-rows: 60px auto 62px;
+}
 #mainBody{
     display: flex;
     flex-direction: column;
     align-items: center !important;
 }
-#quizHeader{
-    width: 800px;
+#quizHeader, #header, #addBtnDiv{
     height: 60px;
     background-color: #fff;
     display: flex;
@@ -41,19 +45,41 @@ td {
     border-top-right-radius: 30px;
     box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.3);
     z-index: 1;
+} 
+#addBtnDiv{
+    height: 65px;
+    justify-content: center;
+    box-shadow: 0px -2px 5px 1px rgba(0, 0, 0, 0.3);
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+#quizHeader{
+    width: 800px;
+}
+#header{
+    justify-content: center;
 }
 #quizBody{
     background-color: rgb(211, 209, 209);
-    padding: 10px 20px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    padding: 10px 20px;
+}
+#questionsBody{
+    background-color: rgb(211, 209, 209);
+    padding: 10px 20px;
+    overflow-y: auto;
 }
 .option_group{
-    list-style-type: none;
     margin-left: 0px;
     padding-left: 0px;
 }
-.option{
+li{
+    list-style-type: none;
+}
+.option, .optionPanel{
     border: 3px solid transparent;
     border-radius: 50px;
     display: flex;
@@ -63,6 +89,7 @@ td {
     height: 40px;
     margin: 10px 10px 10px 0px;
     background-color: white;
+    min-height: 42px;
     transition: 500ms;
 }
 .option:hover{
@@ -90,12 +117,12 @@ td {
     border: none !important;
     float: right;
 }
-.startBtn{
+.startBtn, .adminBtn{
     font-size: xx-large !important;
     border-radius: 80px !important;
     padding: 50px !important;
     border: none !important;
-    margin: 20px;
+    margin: 20px !important;
     transition: 500ms;
 }
 .exitBtn{
@@ -113,11 +140,12 @@ td {
     transition: 500ms;
     border: none !important;
 } */
-.nxtBtn:focus, .exitBtn:focus, .rstBtn:focus, .startBtn:focus{
+/* .startBtn, $ad */
+.nxtBtn:focus, .exitBtn:focus, .rstBtn:focus, .startBtn:focus, .adminBtn:focus{
     outline: none !important;
     box-shadow: none !important;
 }
-.nxtBtn:hover, .rstBtn:hover, .startBtn:hover, .exitBtn:hover{
+.nxtBtn:hover, .rstBtn:hover, .startBtn:hover, .exitBtn:hover, .adminBtn:hover{
     background-color: white !important;
     color: black !important;
     transition: 500ms;
@@ -130,4 +158,111 @@ td {
     background-color: rgb(130, 18, 182);
     box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.3);
     z-index: 1;
+}
+
+/* ==================AdminPanel================ */
+
+#mainPanel{
+    min-width: 300px;
+    min-height: 650px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* position: relative; */
+}
+/* #questionsBody{
+    min-height: 320px;
+    max-height: 320px;
+    width: 350px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+} */
+.container{
+    min-width: 300px;
+    min-height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#greet{
+    color: rgb(160, 157, 157);
+}
+#header{
+    font-size: 20px;
+    /* margin: 5px 1px; */
+}
+
+/* #dateTime{
+    width: 350px;
+    height: 197px;
+    display: flex;
+    justify-content: center;
+}
+#dyDtTm{
+    color: white;
+    position: absolute;
+    width: 350px;
+    min-height: 197px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#day{
+    font-size: 25px;
+}
+#date{
+    font-size: 25px;
+}
+#time{
+    font-size: 35px;
+} */
+#delAllBtn, #addBtn{
+    padding: 15px 18px;
+    border-radius: 50%;
+    font-size: 30px;
+    margin: 1px 30px !important;
+}
+/* #addBtnDiv{
+    height: 62px;
+    display: flex;
+    justify-content: center;
+} */
+.panelLi{
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 42px;
+    align-items: center;
+    margin: 10px;
+}
+ul{
+    padding: 0px !important;
+    transition-delay: 2s;
+}
+p,.panelBtn,input{
+    margin:2px !important;
+}
+.liBtn, .liBtnAdd, .liBtnTAdd{
+    max-height: 50px;
+    font-size: 25px !important;
+    border-radius: 50% !important;
+    padding: 10px 12px !important;
+}
+.liBtnAdd{
+    padding: 10px 13px !important;
+}
+.liBtnTAdd{
+    padding: 10px !important;
+}
+#questions{
+    margin-bottom: 0px !important;
+    background-color: green;
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    max-width: 177px;
+    word-wrap: break-word;
 }
