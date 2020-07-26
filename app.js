@@ -137,7 +137,7 @@ function appendResult(){
     divBody += "<td>" + formattedMin + ':' + formattedSec + "</td>"
     divBody += "</tbody></table>"   
 
-    divBody += "<button class='btn btn-primary rstBtn' onclick='window.location.reload()'>Re-attempt Quiz</button>"
+    divBody += "<button class='btn btn-primary rstBtn' onclick='homePageReattempt()'>Re-attempt Quiz</button>"
     quizBody.innerHTML = divBody
 }
 
@@ -218,6 +218,25 @@ function homePage(){
         first.remove(); 
         first = questionsUl.firstElementChild;
     }
+}
+
+function homePageReattempt() {
+    var first = quizHeader.firstChild
+    first.remove();
+    first = quizBody.firstChild;
+    while (first) {
+        first.remove();
+        first = quizBody.firstChild;
+    }
+    document.getElementById("mainBody").style.display = "none"
+    document.getElementById("startBtn").style.display = "block"
+    document.getElementById("adminBtn").style.display = "block"
+    document.getElementById("exitBtn").style.display = "block"
+
+    document.getElementById("quizHeader").style.justifyContent = "space-between"
+    answers = []
+    qNum = 0
+
 }
 
 function adminPanel(){
