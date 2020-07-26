@@ -147,6 +147,9 @@ function startQuiz(){
     document.getElementById("adminBtn").style.display = "none"
     
     appendQuestion()
+    
+    document.getElementById("timer").innerHTML = "00:00"
+    
     interval = setInterval(function(){
         if(seconds<59){
             seconds++
@@ -228,6 +231,7 @@ function homePageReattempt() {
         first.remove();
         first = quizBody.firstChild;
     }
+    clearInterval(interval)
     document.getElementById("mainBody").style.display = "none"
     document.getElementById("startBtn").style.display = "block"
     document.getElementById("adminBtn").style.display = "block"
@@ -236,7 +240,8 @@ function homePageReattempt() {
     document.getElementById("quizHeader").style.justifyContent = "space-between"
     answers = []
     qNum = 0
-
+    seconds = 0
+    minutes = 0
 }
 
 function adminPanel(){
